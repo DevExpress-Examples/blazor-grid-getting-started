@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blazor-grid-getting-started", "CS\blazor-grid-getting-started.csproj", "{43BCD25F-5692-4EC3-37C1-2CFD129E4EE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43BCD25F-5692-4EC3-37C1-2CFD129E4EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43BCD25F-5692-4EC3-37C1-2CFD129E4EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43BCD25F-5692-4EC3-37C1-2CFD129E4EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43BCD25F-5692-4EC3-37C1-2CFD129E4EE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {611A46CC-1ED9-4B5D-9AE0-BCDF599D7592}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,59 @@
+﻿@page "/"
+@using BlazorGridGettingStarted.Data
+@using BlazorGridGettingStarted.Data.Models
+@inject DataService DataService
+
+<PageTitle>Products</PageTitle>
+
+<div class="main-content">
+    <h1>Products</h1>
+
+    <DxGrid Data="@products"
+            EditMode="GridEditMode.EditRow"
+            ShowFilterRow="true"
+            UnboundColumnData="Grid_CustomUnboundColumnData">
+        <Columns>
+            <DxGridCommandColumn />
+            <DxGridDataColumn FieldName="@nameof(Product.ProductID)" Caption="ID" Width="80px">
+                <EditSettings>
+                    <DxSpinEditSettings ShowSpinButtons="false" ReadOnly="true" />
+                </EditSettings>
+            </DxGridDataColumn>
+            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" Caption="Product Name" MinWidth="200" />
+            <DxGridDataColumn FieldName="@nameof(Product.CategoryID)" Caption="Category" Width="150px">
+                <EditSettings>
+                    <DxComboBoxSettings Data="@categories" 
+                                        ValueFieldName="@nameof(Category.CategoryID)" 
+                                        TextFieldName="@nameof(Category.CategoryName)" />
+                </EditSettings>
+            </DxGridDataColumn>
+            <DxGridDataColumn FieldName="@nameof(Product.UnitPrice)" Caption="Unit Price" DisplayFormat="c2" Width="120px" />
+            <DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)" Caption="In Stock" Width="100px"/>
+            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" Caption="Discontinued" Width="130px" />
+            <DxGridDataColumn FieldName="EstimatedRestockDate" 
+                              Caption="Estimated Restock" 
+                              UnboundType="GridUnboundColumnType.DateTime">
+            </DxGridDataColumn>
+        </Columns>
+    </DxGrid>
+</div>
+
+@code {
+    private List<Product> products = new();
+    private List<Category> categories = new();
+
+    protected override void OnInitialized()
+    {
+        products = DataService.GetProducts().ToList();
+        categories = DataService.GetCategories().ToList();
+    }
+
+    void Grid_CustomUnboundColumnData(GridUnboundColumnDataEventArgs e) {
+        if (e.FieldName == "EstimatedRestockDate") {
+            var product = (Product)e.DataItem;
+            if (product.UnitsInStock == 0) {
+                e.Value = DateTime.Now.AddDays(30);
+            }
+        }
+    }
+}
