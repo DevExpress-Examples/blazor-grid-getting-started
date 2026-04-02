@@ -13,7 +13,7 @@
             ShowFilterRow="true"
             UnboundColumnData="Grid_CustomUnboundColumnData">
         <Columns>
-            <DxGridCommandColumn />
+            <DxGridCommandColumn Width="100px"/>
             <DxGridDataColumn FieldName="@nameof(Product.ProductID)" Caption="ID" Width="80px">
                 <EditSettings>
                     <DxSpinEditSettings ShowSpinButtons="false" ReadOnly="true" />
@@ -30,7 +30,8 @@
             <DxGridDataColumn FieldName="@nameof(Product.UnitPrice)" Caption="Unit Price" DisplayFormat="c2" Width="120px" />
             <DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)" Caption="In Stock" Width="100px"/>
             <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" Caption="Discontinued" Width="130px" />
-            <DxGridDataColumn FieldName="EstimatedRestockDate" 
+            <DxGridDataColumn FieldName="EstimatedRestockDate"
+                              Width="200px"
                               Caption="Estimated Restock" 
                               UnboundType="GridUnboundColumnType.DateTime">
             </DxGridDataColumn>
@@ -51,7 +52,7 @@
     void Grid_CustomUnboundColumnData(GridUnboundColumnDataEventArgs e) {
         if (e.FieldName == "EstimatedRestockDate") {
             var product = (Product)e.DataItem;
-            if (product.UnitsInStock == 0) {
+            if (!product.Discontinued && product.UnitsInStock <= 20) {
                 e.Value = DateTime.Now.AddDays(30);
             }
         }
