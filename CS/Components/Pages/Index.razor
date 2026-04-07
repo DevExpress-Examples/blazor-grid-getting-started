@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using BlazorGridGettingStarted.Data
 @using BlazorGridGettingStarted.Data.Models
+@using DevExpress.Blazor
 @inject DataService DataService
 
 <PageTitle>Products</PageTitle>
@@ -11,7 +12,13 @@
     <DxGrid Data="@products"
             EditMode="GridEditMode.EditRow"
             ShowFilterRow="true"
-            UnboundColumnData="Grid_CustomUnboundColumnData">
+            ShowGroupPanel="true"
+            AutoExpandAllGroupRows="true"
+            DataItemDeleting="OnDataItemDeleting"
+            EditModelSaving="OnEditModelSaving"
+            CustomizeEditModel="OnCustomizeEditModel"
+            @ref="grid"
+    >
         <Columns>
             <DxGridCommandColumn Width="100px"/>
             <DxGridDataColumn FieldName="@nameof(Product.ProductID)" Caption="ID" Width="80px">
@@ -19,27 +26,52 @@
                     <DxSpinEditSettings ShowSpinButtons="false" ReadOnly="true" />
                 </EditSettings>
             </DxGridDataColumn>
-            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" Caption="Product Name" MinWidth="200" />
-            <DxGridDataColumn FieldName="@nameof(Product.CategoryID)" Caption="Category" Width="150px">
+            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" 
+                              Caption="Product Name" 
+                              MinWidth="200" />
+            <DxGridDataColumn FieldName="@nameof(Product.CategoryID)" 
+                              Caption="Category" 
+                              Width="150px"
+                              GroupIndex="0">
                 <EditSettings>
                     <DxComboBoxSettings Data="@categories" 
                                         ValueFieldName="@nameof(Category.CategoryID)" 
                                         TextFieldName="@nameof(Category.CategoryName)" />
                 </EditSettings>
             </DxGridDataColumn>
-            <DxGridDataColumn FieldName="@nameof(Product.UnitPrice)" Caption="Unit Price" DisplayFormat="c2" Width="120px" />
-            <DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)" Caption="In Stock" Width="100px"/>
-            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" Caption="Discontinued" Width="130px" />
-            <DxGridDataColumn FieldName="EstimatedRestockDate"
-                              Width="200px"
-                              Caption="Estimated Restock" 
-                              UnboundType="GridUnboundColumnType.DateTime">
-            </DxGridDataColumn>
+            <DxGridDataColumn FieldName="@nameof(Product.UnitPrice)" 
+                              Caption="Unit Price" 
+                              DisplayFormat="c2" 
+                              Width="120px"
+                              SortOrder="GridColumnSortOrder.Ascending"
+                              SortIndex="0" />
+            <DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)" 
+                              Caption="In Stock" 
+                              Width="100px"
+                              SortOrder="GridColumnSortOrder.Descending"
+                              SortIndex="1"/>
+            <DxGridDataColumn FieldName="@nameof(Product.RestockDate)" 
+                              Caption="Restock Date" 
+                              DisplayFormat="d" 
+                              Width="130px" />
+            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" 
+                              Caption="Discontinued" 
+                              Width="130px" />
         </Columns>
+        <TotalSummary>
+            <DxGridSummaryItem FieldName="@nameof(Product.ProductName)" 
+                               SummaryType="GridSummaryItemType.Count" />
+            <DxGridSummaryItem FieldName="@nameof(Product.UnitPrice)" 
+                               SummaryType="GridSummaryItemType.Avg"
+                               ValueDisplayFormat="c2" />
+            <DxGridSummaryItem FieldName="@nameof(Product.UnitsInStock)" 
+                               SummaryType="GridSummaryItemType.Sum" />
+        </TotalSummary>
     </DxGrid>
 </div>
 
 @code {
+    private IGrid grid;
     private List<Product> products = new();
     private List<Category> categories = new();
 
@@ -49,12 +81,31 @@
         categories = DataService.GetCategories().ToList();
     }
 
-    void Grid_CustomUnboundColumnData(GridUnboundColumnDataEventArgs e) {
-        if (e.FieldName == "EstimatedRestockDate") {
-            var product = (Product)e.DataItem;
-            if (!product.Discontinued && product.UnitsInStock <= 20) {
-                e.Value = DateTime.Now.AddDays(30);
-            }
+    void OnDataItemDeleting(GridDataItemDeletingEventArgs e)
+    {
+        var product = e.DataItem as Product;
+        if (product != null)
+        {
+            products.Remove(product);
+        }
+    }
+
+    void OnEditModelSaving(GridEditModelSavingEventArgs e)
+    {
+        var editModel = (Product)e.EditModel;
+        if (e.IsNew)
+        {
+            products.Add(editModel);
+        }
+        else e.CopyChangesToDataItem();
+    }
+
+    void OnCustomizeEditModel(GridCustomizeEditModelEventArgs e)
+    {
+        if (e.IsNew)
+        {
+            var newProduct = (Product)e.EditModel;
+            newProduct.ProductID = products.Any() ? products.Max(p => p.ProductID) + 1 : 1;
         }
     }
 }
