@@ -14,21 +14,15 @@
             ShowFilterRow="true"
             ShowGroupPanel="true"
             AutoExpandAllGroupRows="true"
+            ColumnCaptionAlignment="GridTextAlignment.Center"
             DataItemDeleting="OnDataItemDeleting"
             EditModelSaving="OnEditModelSaving"
             CustomizeEditModel="OnCustomizeEditModel"
-            @ref="grid"
-    >
+            CssClass="products-grid">
         <Columns>
             <DxGridCommandColumn Width="100px"/>
-            <DxGridDataColumn FieldName="@nameof(Product.ProductID)" Caption="ID" Width="80px">
-                <EditSettings>
-                    <DxSpinEditSettings ShowSpinButtons="false" ReadOnly="true" />
-                </EditSettings>
-            </DxGridDataColumn>
-            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" 
-                              Caption="Product Name" 
-                              MinWidth="200" />
+            <DxGridDataColumn FieldName="@nameof(Product.ProductID)" Width="90px" ReadOnly="true" />
+            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" MinWidth="200" />
             <DxGridDataColumn FieldName="@nameof(Product.CategoryID)" 
                               Caption="Category" 
                               Width="150px"
@@ -40,23 +34,18 @@
                 </EditSettings>
             </DxGridDataColumn>
             <DxGridDataColumn FieldName="@nameof(Product.UnitPrice)" 
-                              Caption="Unit Price" 
                               DisplayFormat="c2" 
                               Width="120px"
                               SortOrder="GridColumnSortOrder.Ascending"
                               SortIndex="0" />
             <DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)" 
-                              Caption="In Stock" 
                               Width="100px"
                               SortOrder="GridColumnSortOrder.Descending"
                               SortIndex="1"/>
             <DxGridDataColumn FieldName="@nameof(Product.RestockDate)" 
-                              Caption="Restock Date" 
                               DisplayFormat="d" 
                               Width="130px" />
-            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" 
-                              Caption="Discontinued" 
-                              Width="130px" />
+            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" Width="130px" />
         </Columns>
         <TotalSummary>
             <DxGridSummaryItem FieldName="@nameof(Product.ProductName)" 
@@ -71,39 +60,31 @@
 </div>
 
 @code {
-    private IGrid grid;
     private List<Product> products = new();
     private List<Category> categories = new();
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() {
         products = DataService.GetProducts().ToList();
         categories = DataService.GetCategories().ToList();
     }
 
-    void OnDataItemDeleting(GridDataItemDeletingEventArgs e)
-    {
+    void OnDataItemDeleting(GridDataItemDeletingEventArgs e) {
         var product = e.DataItem as Product;
-        if (product != null)
-        {
+        if (product != null) {
             products.Remove(product);
         }
     }
 
-    void OnEditModelSaving(GridEditModelSavingEventArgs e)
-    {
+    void OnEditModelSaving(GridEditModelSavingEventArgs e) {
         var editModel = (Product)e.EditModel;
-        if (e.IsNew)
-        {
+        if (e.IsNew) {
             products.Add(editModel);
         }
         else e.CopyChangesToDataItem();
     }
 
-    void OnCustomizeEditModel(GridCustomizeEditModelEventArgs e)
-    {
-        if (e.IsNew)
-        {
+    void OnCustomizeEditModel(GridCustomizeEditModelEventArgs e) {
+        if (e.IsNew) {
             var newProduct = (Product)e.EditModel;
             newProduct.ProductID = products.Any() ? products.Max(p => p.ProductID) + 1 : 1;
         }
