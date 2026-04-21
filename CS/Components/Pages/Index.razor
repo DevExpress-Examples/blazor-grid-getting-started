@@ -7,25 +7,24 @@
 <PageTitle>Products</PageTitle>
 
 <div class="main-content">
-    <h1>Products</h1>
-
     <DxGrid Data="@products"
             EditMode="GridEditMode.EditRow"
             ShowFilterRow="true"
             ShowGroupPanel="true"
             AutoExpandAllGroupRows="true"
-            ColumnCaptionAlignment="GridTextAlignment.Center"
+            ColumnResizeMode="GridColumnResizeMode.NextColumn"
             DataItemDeleting="OnDataItemDeleting"
             EditModelSaving="OnEditModelSaving"
             CustomizeEditModel="OnCustomizeEditModel"
+            VirtualScrollingEnabled="true"
             CssClass="products-grid">
         <Columns>
             <DxGridCommandColumn Width="100px"/>
             <DxGridDataColumn FieldName="@nameof(Product.ProductID)" Width="90px" ReadOnly="true" />
-            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" MinWidth="200" />
+            <DxGridDataColumn FieldName="@nameof(Product.ProductName)" MinWidth="200" Width="50%" />
             <DxGridDataColumn FieldName="@nameof(Product.CategoryID)" 
                               Caption="Category" 
-                              Width="150px"
+                              MinWidth="150"
                               GroupIndex="0">
                 <EditSettings>
                     <DxComboBoxSettings Data="@categories" 
@@ -35,17 +34,17 @@
             </DxGridDataColumn>
             <DxGridDataColumn FieldName="@nameof(Product.UnitPrice)" 
                               DisplayFormat="c2" 
-                              Width="120px"
+                              MinWidth="130"
                               SortOrder="GridColumnSortOrder.Ascending"
                               SortIndex="0" />
             <DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)" 
-                              Width="100px"
+                              MinWidth="130"
                               SortOrder="GridColumnSortOrder.Descending"
                               SortIndex="1"/>
             <DxGridDataColumn FieldName="@nameof(Product.RestockDate)" 
                               DisplayFormat="d" 
-                              Width="130px" />
-            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" Width="130px" />
+                              MinWidth="130" />
+            <DxGridDataColumn FieldName="@nameof(Product.Discontinued)" MinWidth="130" />
         </Columns>
         <TotalSummary>
             <DxGridSummaryItem FieldName="@nameof(Product.ProductName)" 
