@@ -2,7 +2,7 @@
 
 This example binds the [DevExpress Blazor Grid](https://docs.devexpress.com/Blazor/403143/components/grid) component to data, configures initial sort and filter settings, displays total summaries, and enables data editing.
 
-![Get Started with DevExpress Blazor Grid](/blazor-grid-get-started.png)
+![Get Started with DevExpress Blazor Grid](/blazor-grid-getting-started.png)
 
 Refer to the following help topic for more information: [Getting Started with the Blazor Grid](https://docs.devexpress.com/Blazor/403625/components/grid/get-started-with-grid).
 
