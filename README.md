@@ -4,7 +4,7 @@ This example binds the [DevExpress Blazor Grid](https://docs.devexpress.com/Blaz
 
 ![Get Started with DevExpress Blazor Grid](/blazor-grid-getting-started.png)
 
-Refer to the following help topic for more information: [Getting Started with the Blazor Grid](https://docs.devexpress.com/Blazor/403625/components/grid/get-started-with-grid).
+Refer to the following help topic for additional information: [Getting Started with the Blazor Grid](https://docs.devexpress.com/Blazor/403625/components/grid/get-started-with-grid).
 
 ## Files to Review
 
