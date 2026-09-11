@@ -19,6 +19,10 @@ Refer to the following help topic for additional information: [Getting Started w
 
 - [Bind Blazor Grid to Data](https://docs.devexpress.com/Blazor/403737/components/grid/bind-to-data)
 
+## Video
+
+- [Blazor Data Grid: Get Started](https://www.youtube.com/watch?v=ZOe026Cs5aw)
+
 ## More Examples
 
 - [Bind the Grid to a DataTable object](https://github.com/DevExpress-Examples/blazor-grid-bind-to-datatable-object)
